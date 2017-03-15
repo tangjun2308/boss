@@ -1,5 +1,7 @@
 package com.tangjun.boss.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,34 @@ public class GoodsServiceImpl implements GoodsService{
 		}
 		
 		return true;
+	}
+	
+	public Goods findById(int id){
+		return goodsDao.findById(id);
+	}
+
+	public boolean updateGoods(Goods goods) {
+		try{
+			goodsDao.updateGoods(goods);
+		}catch (Exception e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean deleteGoods(int id) {
+		try{
+			goodsDao.deleteGoods(id);
+		}catch (Exception e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public List<Goods> getGoodsList() {
+		return goodsDao.getGoodsList();
 	}
 
 }

@@ -192,3 +192,24 @@
 	w.Layer = Layer;
 	w.Loading = Loading;
 })(window,document);
+
+window.onload = function(){
+	var user = getUser();
+	if(user == null){ //未登录
+		$("#welcome").html("请<a href=\"html/login.html\">[登录]</a>");
+		$("#items").html("<li><a href=\"/\">首页</a></li>");
+	}else{
+		var name = user.name;
+		var type = user.type;
+		if(type == 0){
+			$("#welcome").html("买家你好，<span class=\"name\">" + name + "</span>！<a href=\"/logout.do\">[退出]</a>");
+			$("#items").html("<li><a href=\"/\">首页</a></li>" +
+                             "<li><a href=\"/account.do\">账务</a></li>" +
+                             "<li><a href=\"/settleAccount.do\">购物车</a></li>");
+		}else{
+			$("#welcome").html("卖家你好，<span class=\"name\">" + name + "</span>！<a href=\"/logout.do\">[退出]</a>");
+			$("#items").html("<li><a href=\"/\">首页</a></li>" +
+					         "<li><a href=\"/public.do\">发布</a></li>");
+		}
+	}
+}; 
