@@ -1,4 +1,4 @@
-
+/*
 	var $ = function(id){
 		return document.getElementById(id);
 	}
@@ -60,7 +60,28 @@
 		}).show();
 		return;
 	};
-
-
-
-
+*/
+window.onload = function(){
+    var thisURL = document.URL;    
+    var getval =thisURL.split('?')[1];  
+    var showval= getval.split("=")[1]; 
+	$.ajax({
+		url : '/hello/goodsDetail',
+		type : 'POST',
+		data : {goodsId : showval},
+		dataType : 'json',
+		success : function(json) {
+			if (json.code == 200) {
+				var goods = json.goods;
+				$("#picImg").attr('src',goods.picUrl);
+				$("#name").html(goods.name);
+				$("#summary").html(goods.summary);
+				$("#price").html(goods.price);
+				$("#detail").html(goods.detail);
+	            
+			} else {
+				alert("获取商品详情失败！");
+			}
+		}
+	});
+}

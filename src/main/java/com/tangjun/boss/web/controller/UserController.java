@@ -41,4 +41,16 @@ public class UserController {
 		
 		return map;
 	}
+	
+	@RequestMapping("/logout")
+	@ResponseBody
+	public Map<String, Object> logout(HttpServletRequest request){
+		
+		HttpSession session = request.getSession();
+		session.removeAttribute("user");
+		Map<String, Object> map=new HashMap<String, Object>();
+		map.put("code", 200);
+
+		return map;
+	}
 }

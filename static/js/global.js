@@ -193,23 +193,45 @@
 	w.Loading = Loading;
 })(window,document);
 
-window.onload = function(){
+$(function(){
 	var user = getUser();
 	if(user == null){ //未登录
-		$("#welcome").html("请<a href=\"html/login.html\">[登录]</a>");
+		var loginUrl = "html/login.html";
+		if(window.location.pathname.indexOf("html/") > 0)  //表明已经在html目录下
+			loginUrl = "login.html";
+		$("#welcome").html("请<a href=\"" + loginUrl + "\">[登录]</a>");
 		$("#items").html("<li><a href=\"/\">首页</a></li>");
 	}else{
 		var name = user.name;
 		var type = user.type;
 		if(type == 0){
-			$("#welcome").html("买家你好，<span class=\"name\">" + name + "</span>！<a href=\"/logout.do\">[退出]</a>");
+			$("#welcome").html("买家你好，<span class=\"name\">" + name + "</span>！<a type=\"button\" onclick=\"logout();\">[退出]</a>");
 			$("#items").html("<li><a href=\"/\">首页</a></li>" +
-                             "<li><a href=\"/account.do\">账务</a></li>" +
-                             "<li><a href=\"/settleAccount.do\">购物车</a></li>");
+                             "<li><a href=\"account.html\">账务</a></li>" +
+                             "<li><a href=\"cart.html\">购物车</a></li>");
 		}else{
-			$("#welcome").html("卖家你好，<span class=\"name\">" + name + "</span>！<a href=\"/logout.do\">[退出]</a>");
+			var publicUrl = "html/public.html";
+			if(window.location.pathname.indexOf("html/") > 0)  //表明已经在html目录下
+				publicUrl = "public.html";
+			$("#welcome").html("卖家你好，<span class=\"name\">" + name + "</span>！<a type=\"button\" onclick=\"logout();\">[退出]</a>");
 			$("#items").html("<li><a href=\"/\">首页</a></li>" +
-					         "<li><a href=\"/public.do\">发布</a></li>");
+					         "<li><a href=\"" + publicUrl + "\">发布</a></li>");
 		}
 	}
-}; 
+}); 
+
+function  logout(){
+	$.ajax({
+		url : '/hello/logout',
+		type : 'POST',
+		dataType : 'json',
+		success : function(json) {
+			if (json.code == 200) {
+				delCookie("user");
+				location.href = '../html/index.html';
+			} else {
+				bootbox.alert("执行失败！");
+			}
+		}
+	});
+}

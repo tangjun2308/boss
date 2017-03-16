@@ -14,7 +14,7 @@ import com.tangjun.boss.meta.Goods;
 public interface GoodsDao {
 	
     @Insert("INSERT INTO goods (name, summary, price, picUrl, detail, createTime, updateTime, status) " +
-    	    "VALUES (#{name}, #{summary}, #{price}, #{picUrl}, #{detail}, #{createTime}, #{updateTime}, #{status} )")
+    	    "VALUES (#{name}, #{summary}, #{price}, #{picUrl}, #{detail}, NOW(), NOW(), #{status} )")
     @Options(useGeneratedKeys=true, keyProperty="id")
     public void insertGoods(Goods goods);
     

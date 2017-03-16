@@ -1,3 +1,4 @@
+/*
 (function(w,d,u){
 	var form = util.get('form');
 	if(!form){
@@ -115,3 +116,34 @@
 	};
 	page.init();
 })(window,document);
+*/
+
+function publicGoods(){
+	var data={};
+	var name = $("#name").val();
+	var summary = $("#summary").val();
+	var picUrl = $("#picUrl").val();
+	var price = $("#price").val();
+	var detail = $("#detail").val();
+	data.name = name;
+	data.summary = summary;
+	data.price = price;
+	data.detail = detail;
+	data.picUrl = picUrl;
+	
+	$.ajax({
+		url : '/hello/public.do',
+		type : 'POST',
+		data : data,
+		dataType : 'json',
+		success : function(json) {
+			if (json.code == 200) {
+				var goodsId = json.goodsId;
+				location.href = 'publicSuccess.html?goodsId=' + goodsId;
+			} else {
+				alert("发布失败！");
+			}
+		}
+	});
+
+}

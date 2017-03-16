@@ -42,3 +42,32 @@
 	};
 	page.init();
 })(window,document);
+
+
+window.onload = function(){
+	$.ajax({
+		url : '/hello/getAllGoods',
+		type : 'POST',
+		dataType : 'json',
+		success : function(json) {
+			if (json.code == 200) {
+				var list = json.goodsList;
+				var len = list.length;
+	            for(var i=0; i<len; i++){
+	            	var goods = list[i];
+	            	$("#plist").append(
+	    	            "<li>"+
+	   	                 "<a href=\"../html/detail.html?id=" + goods.id + "\" class=\"link\">" +
+	   	                     "<div class=\"img\"><img src=\"" +goods.picUrl + "\"></div>" +
+	   	                     "<h3>" + goods.name + "</h3>" +
+	   	                     "<div class=\"price\"><span class=\"v-unit\">¥</span><span class=\"v-value\">" + goods.price + "</span></div>" +
+	   	                 "</a>" +
+	   	                "</li>"
+	            			);
+	            }
+			} else {
+				alert("获取商品列表失败！");
+			}
+		}
+	});
+}
