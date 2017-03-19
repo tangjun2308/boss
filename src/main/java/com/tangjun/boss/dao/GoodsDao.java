@@ -18,7 +18,7 @@ public interface GoodsDao {
     @Options(useGeneratedKeys=true, keyProperty="id")
     public void insertGoods(Goods goods);
     
-    @Select("select * from goods where id=#{id}")
+    @Select("select * from goods where id=#{id} and status=1")
     public Goods findById(int id);
     
     @Update("update goods set name=#{name}, summary=#{summary}, price=#{price}, picUrl=#{picUrl}, detail=#{detail}, status=#{status}"
@@ -40,6 +40,6 @@ public interface GoodsDao {
 		@Result(property="status",column="status")
 		}
     )
-	@Select("select * from goods")    
+	@Select("select * from goods where status=1")    
 	public List<Goods> getGoodsList();
 }

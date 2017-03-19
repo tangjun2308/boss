@@ -45,6 +45,27 @@ public class GoodsController {
 		return map;
 	}
 	
+	@RequestMapping(value = "/deleteGoods.do")
+	@ResponseBody
+	public Map<String, Object> deleteGoods(HttpServletRequest request, @RequestParam("goodsId") Integer goodsId){
+		Map<String, Object> map=new HashMap<String, Object>();
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		if(user == null || user.getType()==0){
+			map.put("code", -1);
+			return map;
+		}
+
+		boolean success = goodsServiceImpl.deleteGoods(goodsId);
+		if(success){
+			map.put("code", 200);
+		}else{
+			map.put("code", 0);
+		}
+		
+		return map;
+	}
+	
 	@RequestMapping(value = "/getAllGoods")
 	@ResponseBody
 	public Map<String, Object> getAllGoods(){

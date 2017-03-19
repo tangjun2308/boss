@@ -230,7 +230,7 @@ function  logout(){
 				delCookie("user");
 				location.href = '../html/index.html';
 			} else {
-				bootbox.alert("执行失败！");
+				alert("执行失败！");
 			}
 		}
 	});
