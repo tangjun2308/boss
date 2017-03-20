@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tangjun.boss.meta.Goods;
+import com.tangjun.boss.meta.Order;
 import com.tangjun.boss.meta.User;
 import com.tangjun.boss.service.impl.GoodsServiceImpl;
+import com.tangjun.boss.service.impl.OrderServiceImpl;
 
 @Controller
 public class GoodsController {
 	@Autowired
 	private GoodsServiceImpl goodsServiceImpl;
+	@Autowired
+	private OrderServiceImpl orderServiceImpl;
 	
 	@RequestMapping(value = "/public.do")
 	@ResponseBody
@@ -32,9 +36,16 @@ public class GoodsController {
 			map.put("code", -1);
 			return map;
 		}
-
+		
+		
+		boolean success = false;
 		goods.setStatus(1);
-		boolean success = goodsServiceImpl.insertGoods(goods);
+		if(goods.getId() != 0){
+			success = goodsServiceImpl.updateGoods(goods);
+		}else{
+			success = goodsServiceImpl.insertGoods(goods);
+		}
+
 		if(success){
 			map.put("code", 200);
 			map.put("goodsId", goods.getId());
@@ -62,6 +73,49 @@ public class GoodsController {
 		}else{
 			map.put("code", 0);
 		}
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "/goodsSelledNum.do")
+	@ResponseBody
+	public Map<String, Object> goodsSelledNum(HttpServletRequest request, @RequestParam("goodsId") Integer goodsId){
+		Map<String, Object> map=new HashMap<String, Object>();
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		if(user == null || user.getType()==0){
+			map.put("code", -1);
+			return map;
+		}
+
+		int num = orderServiceImpl.getGoodsSelledNum(goodsId);
+
+		map.put("code", 200);
+		map.put("num", num);
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "/goodsUserBuyNum.do")
+	@ResponseBody
+	public Map<String, Object> goodsUserBuyNum(HttpServletRequest request, 
+			                                   @RequestParam("goodsId") Integer goodsId,
+			                                   @RequestParam("userId") Integer userId){
+		Map<String, Object> map=new HashMap<String, Object>();
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		if(user == null || user.getType()==1){
+			map.put("code", -1);
+			return map;
+		}
+
+		int num = orderServiceImpl.getGoodsUserBuyNum(goodsId,userId);
+		if(num>0){
+			Order order = orderServiceImpl.getOrderByUserIdAndGoodsId(goodsId, userId);
+			map.put("price", order.getGoodsPrice());
+		}
+		map.put("code", 200);
+		map.put("num", num);
 		
 		return map;
 	}

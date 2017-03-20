@@ -21,7 +21,7 @@ public interface GoodsDao {
     @Select("select * from goods where id=#{id} and status=1")
     public Goods findById(int id);
     
-    @Update("update goods set name=#{name}, summary=#{summary}, price=#{price}, picUrl=#{picUrl}, detail=#{detail}, status=#{status}"
+    @Update("update goods set name=#{name}, summary=#{summary}, price=#{price}, picUrl=#{picUrl}, detail=#{detail}, status=#{status}, updateTime=NOW()"
             + " where id=#{id}")
     public void updateGoods(Goods goods);
     

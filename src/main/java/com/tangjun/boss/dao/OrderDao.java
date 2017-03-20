@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.tangjun.boss.meta.Order;
@@ -15,6 +16,9 @@ public interface OrderDao {
     @Options(useGeneratedKeys=true, keyProperty="id")
     public void insertOrder(Order order);
     
+	@Select("select * from myorder where goodsId = #{goodsId} and userId = #{userId}")    
+	public Order getOrderByUserIdAndGoodsId(@Param("goodsId")int goodsId, @Param("userId")int userId);
+    
 	@Select("select * from myorder where userId=#{userId}")    
 	public List<Order> getOrderList(int userId);
 	
@@ -23,5 +27,11 @@ public interface OrderDao {
 	
 	@Select("select goodsId from myorder where userId=#{userId}")    
 	public List<Integer> getAllGoodsIdForUser(int userId);
+	
+	@Select("select count(num) from myorder where goodsId = #{goodsId}")
+	public int getGoodsSelledNum(int goodsId);
+	
+	@Select("select count(num) from myorder where goodsId = #{goodsId} and userId = #{userId}")
+	public int getGoodsUserBuyNum(@Param("goodsId")int goodsId, @Param("userId")int userId);
 	
 }

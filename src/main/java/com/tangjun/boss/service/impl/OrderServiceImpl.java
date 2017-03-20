@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tangjun.boss.dao.OrderDao;
+import com.tangjun.boss.meta.Order;
 import com.tangjun.boss.meta.ShoppingCart;
 import com.tangjun.boss.service.OrderService;
 
@@ -41,6 +42,21 @@ public class OrderServiceImpl implements OrderService {
 			ans.substring(0, ans.length()-1);
 		}
 		return ans;
+	}
+
+	public int getGoodsSelledNum(int goodsId) {
+		int num = orderDao.getGoodsSelledNum(goodsId);
+		return num;
+	}
+
+	public int getGoodsUserBuyNum(int goodsId, int userId) {
+		int num = orderDao.getGoodsUserBuyNum(goodsId,userId);
+		return num;
+	}
+
+	public Order getOrderByUserIdAndGoodsId(int goodsId, int userId) {
+		Order order = orderDao.getOrderByUserIdAndGoodsId(goodsId, userId);
+		return order;
 	}
 
 }

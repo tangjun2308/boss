@@ -118,11 +118,39 @@
 })(window,document);
 */
 
+$(function(){
+    var thisURL = document.URL;    
+    var getval =thisURL.split('?')[1];  
+    if(getval != null && getval.length >0){
+	    var showval= getval.split("=")[1]; 
+		$.ajax({
+			url : '/hello/goodsDetail',
+			type : 'POST',
+			data : {goodsId : showval},
+			dataType : 'json',
+			success : function(json) {
+				if (json.code == 200) {
+					var goods = json.goods;
+					$("#name").val(goods.name);
+					$("#summary").val(goods.summary);
+					$("#detail").val(goods.detail);
+					$("#price").val(goods.price);
+					$("#imgpre").attr('src',goods.picUrl);
+				} else {
+					alert("获取商品详情失败！");
+				}
+			}
+		});
+    }
+}); 
+
 function publicGoods(){
 	var data={};
 	var name = $("#name").val();
 	var summary = $("#summary").val();
 	var picUrl = $("#picUrl").val();
+	if(picUrl == null || picUrl == "")
+		picUrl = $("#imgpre").val();
 	var price = $("#price").val();
 	var detail = $("#detail").val();
 	data.name = name;
@@ -130,6 +158,15 @@ function publicGoods(){
 	data.price = price;
 	data.detail = detail;
 	data.picUrl = picUrl;
+	
+	var isEdit = false;
+    var thisURL = document.URL;    
+    var getval =thisURL.split('?')[1];  
+    if(getval != null && getval.length >0){
+    	isEdit = true;
+	    var showval= getval.split("=")[1];
+	    data.id = showval;
+    }
 	
 	$.ajax({
 		url : '/hello/public.do',
@@ -139,9 +176,15 @@ function publicGoods(){
 		success : function(json) {
 			if (json.code == 200) {
 				var goodsId = json.goodsId;
-				location.href = 'publicSuccess.html?goodsId=' + goodsId;
+				if(isEdit)
+					location.href = 'publicSuccess.html?goodsId=' + goodsId + "&type=1";
+				else
+					location.href = 'publicSuccess.html?goodsId=' + goodsId + "&type=0";
 			} else {
-				alert("发布失败！");
+				if(isEdit)
+					alert("编辑失败！");
+				else
+					alert("发布失败！");
 			}
 		}
 	});
