@@ -15,9 +15,13 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDao orderDao;
 	
-	public boolean addOrder(ShoppingCart shoppingCart) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addOrder(Order order) {
+		try{
+			orderDao.insertOrder(order);
+		}catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	public String getSellerGoodsIds() {
@@ -57,6 +61,11 @@ public class OrderServiceImpl implements OrderService {
 	public Order getOrderByUserIdAndGoodsId(int goodsId, int userId) {
 		Order order = orderDao.getOrderByUserIdAndGoodsId(goodsId, userId);
 		return order;
+	}
+
+	public List<Order> getOrderList(int userId) {
+		List<Order> list = orderDao.getOrderList(userId);
+		return list;
 	}
 
 }

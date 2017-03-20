@@ -161,8 +161,6 @@ function addCart(element){
 
 function initNum(){
 	$("#plusNum").click(function(){
-		//e = window.event || e;
-		//o = e.srcElement || e.target;
 		var num = $("#allNum").html();
 		if(num > 0){
 			num --;
@@ -173,8 +171,6 @@ function initNum(){
 	});
 
 	$("#addNum").click(function(){
-		//e = window.event || e;
-		//o = e.srcElement || e.target;
 		var num = $("#allNum").html();
 		num ++;
 		$("#allNum").html(num);

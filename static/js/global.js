@@ -205,10 +205,16 @@ $(function(){
 		var name = user.name;
 		var type = user.type;
 		if(type == 0){
+			var accountUrl = "html/account.html";
+			var cartUrl = "html/cart.html";
+			if(window.location.pathname.indexOf("html/") > 0){ //表明已经在html目录下
+				accountUrl = "account.html";
+				cartUrl = "cart.html";
+			} 
 			$("#welcome").html("买家你好，<span class=\"name\">" + name + "</span>！<a type=\"button\" onclick=\"logout();\">[退出]</a>");
 			$("#items").html("<li><a href=\"/\">首页</a></li>" +
-                             "<li><a href=\"account.html\">账务</a></li>" +
-                             "<li><a href=\"cart.html\">购物车</a></li>");
+                             "<li><a href=\"" + accountUrl + "\">账务</a></li>" +
+                             "<li><a href=\"" + cartUrl + "\">购物车</a></li>");
 		}else{
 			var publicUrl = "html/public.html";
 			if(window.location.pathname.indexOf("html/") > 0)  //表明已经在html目录下

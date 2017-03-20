@@ -1,6 +1,8 @@
 package com.tangjun.boss.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tangjun.boss.meta.Goods;
 import com.tangjun.boss.meta.ShoppingCart;
 import com.tangjun.boss.meta.User;
 import com.tangjun.boss.service.impl.CartServiceImpl;
+import com.tangjun.boss.service.impl.GoodsServiceImpl;
 
 @Controller
 public class CartController {
 	@Autowired
 	private CartServiceImpl cartServiceImpl;
+	@Autowired
+	private GoodsServiceImpl goodsServiceImpl;
 	
 	@RequestMapping(value = "/addToMyCart.do")
 	@ResponseBody
@@ -43,7 +49,7 @@ public class CartController {
 			String[] nums= cart.getGoodsNums().split(",");
 			if(ids.toString().contains(goodsId + "")){
 				String newNums = ""; 
-				for(int i=0; i<ids.length - 1; i++){
+				for(int i=0; i<ids.length; i++){
 					String id = ids[i];
 					if(id.equals(goodsId + "")){
 						nums[i] = (Integer.valueOf(nums[i]) + num) + "";
@@ -71,6 +77,39 @@ public class CartController {
 			map.put("code", 0);
 		}
 		
+		return map;
+	}
+	
+	@RequestMapping(value = "/MyCart.do")
+	@ResponseBody
+	public Map<String, Object> MyCart(HttpServletRequest request, 
+			                               @RequestParam("userId") int userId){
+		Map<String, Object> map=new HashMap<String, Object>();
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		if(user == null || user.getType()==1){
+			map.put("code", -1);
+			return map;
+		}
+		
+		ShoppingCart cart = cartServiceImpl.findByUserId(userId);
+		List<Goods> goodsList = new ArrayList<Goods>();
+		List<Integer> numList = new ArrayList<Integer>();
+		if(cart != null && cart.getGoodsIds() != null && !"".equals(cart.getGoodsIds())){
+			String[] ids= cart.getGoodsIds().split(",");
+			String[] nums= cart.getGoodsNums().split(",");
+			for(int i=0; i<ids.length; i++){
+				Integer id = Integer.valueOf(ids[i]);
+				goodsList.add(goodsServiceImpl.findById(id));
+				numList.add(Integer.valueOf(nums[i]));
+			}
+			
+		}
+
+		map.put("code", 200);
+		map.put("goodsList", goodsList);
+		map.put("numList", numList);
+
 		return map;
 	}
 	
