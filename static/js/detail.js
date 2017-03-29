@@ -97,8 +97,9 @@ window.onload = function(){
 				if (json.code == 200) {
 					var num = json.num;
 					$("#num").html("已售数量： " + num);
-				} else {
-					alert("获取商品已售数量失败！");
+				}else if(json.code == -1) {
+					delCookie("user");
+					window.location.reload();
 				}
 			}
 		});
@@ -120,8 +121,9 @@ window.onload = function(){
 						"<button class=\"u-btn u-btn-primary\"  data-id=\""+ showval + "\" onclick=\"addCart(this);\">加入购物车</button>"
 						);
 					}
-				} else {
-					alert("获取商品已售数量失败！");
+				}else if(json.code == -1) {
+					delCookie("user");
+					window.location.reload();
 				}
 			}
 		});
@@ -147,9 +149,9 @@ function addCart(element){
 				success : function(json) {
 					if (json.code == 200) {
 						loading.result('添加购物车成功');
-					} else {
-						//alert("加入到购物车失败！");
-						loading.result('添加购物车失败');
+					}else if(json.code == -1) {
+						delCookie("user");
+						location.href = 'login.html';
 					}
 				}
 			});

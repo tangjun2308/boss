@@ -1,7 +1,6 @@
 package com.tangjun.boss.web.filter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,12 +19,11 @@ public class SessionFilter extends OncePerRequestFilter{
   
         // uri中包含background时才进行过滤
         if (uri.indexOf(".do") != -1) {
-            // 执行过滤
             // 从session中获取登录者实体
             Object obj = request.getSession().getAttribute("user");
             if (null == obj) {
                 // 如果session中不存在登录者实体，则弹出框提示重新登录
-                // 设置request和response的字符集，防止乱码
+            	/*
                 request.setCharacterEncoding("UTF-8");
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter out = response.getWriter();
@@ -38,6 +36,14 @@ public class SessionFilter extends OncePerRequestFilter{
                 builder.append("';");
                 builder.append("</script>");
                 out.print(builder.toString());
+                */
+                response.setCharacterEncoding("UTF-8");  
+                response.setContentType("application/json");  
+                try {  
+                    response.getWriter().write("{\"code\":-1}");   //返回json的code为-1表示没有登录
+                }catch (IOException e) {  
+                    e.printStackTrace();  
+                }  
             } else {
                 // 如果session中存在登录者实体，则继续
                 filterChain.doFilter(request, response);

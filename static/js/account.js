@@ -23,8 +23,9 @@ $(function(){
 				$("#myTable").html(str);
 				$("#totalPrice").html(total);
 				
-			} else {
-				loading.result("获取购买信息失败");
+			}else if(json.code == -1) {
+				delCookie("user");
+				location.href = 'login.html';
 			}
 		},
 	   error : function(){ 

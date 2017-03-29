@@ -199,6 +199,12 @@ $(function(){
 		var loginUrl = "html/login.html";
 		if(window.location.pathname.indexOf("html/") > 0)  //表明已经在html目录下
 			loginUrl = "login.html";
+		if(window.location.pathname.indexOf("/public") > 0
+		   || window.location.pathname.indexOf("/account") > 0
+		   || window.location.pathname.indexOf("/cart") > 0){  //未登录的情况不允许跳转这几个模块
+			location.href = loginUrl;
+			return;
+		}
 		$("#welcome").html("请<a href=\"" + loginUrl + "\">[登录]</a>");
 		$("#items").html("<li><a href=\"/\">首页</a></li>");
 	}else{
@@ -234,7 +240,10 @@ function  logout(){
 		success : function(json) {
 			if (json.code == 200) {
 				delCookie("user");
-				location.href = '../html/index.html';
+				var loginUrl = "html/login.html";
+				if(window.location.pathname.indexOf("html/") > 0)  //表明已经在html目录下
+					loginUrl = "login.html";
+				location.href = loginUrl;
 			} else {
 				alert("执行失败！");
 			}

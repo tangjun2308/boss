@@ -33,18 +33,18 @@
             <div class="fmitem">
             <label class="fmlab">图片：</label>
             	<div class="fmipt" id="uploadType">
-	                <input name="pic" type="radio" value="url" checked /> 图片地址
-					<input name="pic" type="radio" value="file" /> 本地上传
+	                <input onclick="changeType('1')" name="pic" type="radio" value="url" checked /> 图片地址
+					<input onclick="changeType('2')" name="pic" type="radio" value="file" /> 本地上传
 				</div>	
             </div>
             <div class="fmitem">
                 <label class="fmlab"></label>
-                <div class="fmipt" id="urlUpload">
-                    <input class="u-ipt ipt"  name="image" id="picUrl"  laceholder="图片地址"/>
+                <div class="fmipt" id="urlUpload" style="display:block">
+                    <input class="u-ipt ipt"  name="image" id="picUrl"  oninput="picUrlChange();" laceholder="图片地址"/>
                 </div>
                 <div class="fmipt" id="fileUpload"  style="display:none">
-                    <input class="u-ipt ipt" name="file" type="file" id="fileUp"/>
-                    <button class="u-btn u-btn-primary" id="upload">上传</button>
+                    <input class="u-ipt ipt" id="file" type="file"/>
+                    <button class="u-btn u-btn-primary" id="ajaxSubmit">上传</button>
                 </div>
             </div>
             <div class="fmitem">

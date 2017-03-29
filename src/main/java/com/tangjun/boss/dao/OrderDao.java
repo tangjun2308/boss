@@ -28,10 +28,10 @@ public interface OrderDao {
 	@Select("select goodsId from myorder where userId=#{userId}")    
 	public List<Integer> getAllGoodsIdForUser(int userId);
 	
-	@Select("select count(num) from myorder where goodsId = #{goodsId}")
+	@Select("select IFNULL(sum(num),0) from myorder where goodsId = #{goodsId}")
 	public int getGoodsSelledNum(int goodsId);
 	
-	@Select("select count(num) from myorder where goodsId = #{goodsId} and userId = #{userId}")
+	@Select("select IFNULL(count(num),0) from myorder where goodsId = #{goodsId} and userId = #{userId}")
 	public int getGoodsUserBuyNum(@Param("goodsId")int goodsId, @Param("userId")int userId);
 	
 }

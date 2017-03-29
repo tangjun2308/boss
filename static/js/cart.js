@@ -138,8 +138,9 @@ $(function(){
 	
 						$("#newTable").html(str);
 					}
-				} else {
-					alert("获取购物车信息失败！");
+				}else if(json.code == -1) {
+					delCookie("user");
+					location.href = 'login.html';
 				}
 			}
 		});
@@ -195,9 +196,10 @@ function buy(){
 				data : {nums: nums, goodsIds: goodsIds, prices: prices},
 				success : function(json) {
 					if (json.code == 200) {
-						loading.result('购买成功',function(){location.href = '../html/account.html';});
-					} else {
-						loading.result('购买失败');
+						loading.result('购买成功',function(){location.href = 'account.html';});
+					}else if(json.code == -1) {
+						delCookie("user");
+						location.href = 'login.html';
 					}
 				},
 			   error : function(){ 

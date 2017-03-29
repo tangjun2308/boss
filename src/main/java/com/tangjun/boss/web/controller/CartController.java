@@ -61,7 +61,7 @@ public class CartController {
 				cart.setGoodsIds(cart.getGoodsIds() + goodsId + ",");
 				cart.setGoodsNums(cart.getGoodsNums() + num + ",");
 			}
-			success = cartServiceImpl.insertCart(cart);
+			success = cartServiceImpl.updateCart(cart);
 		}else{
 			cart = new ShoppingCart();
 			cart.setGoodsIds(goodsId + ",");

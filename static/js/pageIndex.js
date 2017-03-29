@@ -56,9 +56,9 @@ window.onload = function(){
 			success : function(json) {
 				if (json.code == 200) {
 					ids = json.goodsIds;
-				} else {
+				}else if(json.code == -1) {
 					delCookie("user");
-					location.href = '../html/index.html';
+					location.href = 'login.html';
 				}
 			}
 		});
@@ -71,9 +71,9 @@ window.onload = function(){
 			success : function(json) {
 				if (json.code == 200) {
 					ids = json.goodsIds;
-				} else {
+				}else if(json.code == -1) {
 					delCookie("user");
-					location.href = '../html/index.html';
+					location.href = 'login.html';
 				}
 			}
 		});
@@ -92,8 +92,10 @@ window.onload = function(){
 	            	var delStr = "";
 	            	if(ids.indexOf(goods.id) != -1)
 	            		status2 = status;
-	            	else
-	            		delStr ="<span class=\"u-btn u-btn-normal u-btn-xs del\" onclick=\"deleteGoods(" + goods.id + ");\">删除</span>";
+	            	else{
+	            		if(user != null && user.type == 1)
+	            			delStr ="<span class=\"u-btn u-btn-normal u-btn-xs del\" onclick=\"deleteGoods(" + goods.id + ");\">删除</span>";
+	            	}
 	            	$("#plist").append(
 	    	            "<li id=\"g-" + goods.id + "\">"+
 	   	                 "<a href=\"../html/detail.html?id=" + goods.id + "\" class=\"link\">" +

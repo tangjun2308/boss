@@ -142,6 +142,40 @@ $(function(){
 			}
 		});
     }
+    
+    //异步提交表单
+    $("#ajaxSubmit").on("click",function(){
+		var maxAllowedSize = 1204*1024;
+		var realSize = $('#file')[0].files[0].size;
+
+		if(realSize > maxAllowedSize) {
+			alert("超过文件上传大小限制");
+		}else{
+	        var formData = new FormData();
+	        formData.append('file', $('#file')[0].files[0]);
+	        $.ajax({
+	            url: '/hello/fileUpload.do',
+	            type: 'POST',
+	            cache: false,
+	            data: formData,
+	            processData: false,   // 告诉jQuery不要去处理发送的数据
+	            contentType: false,    // 告诉jQuery不要去设置Content-Type请求头
+	            success : function(json) {
+					if (json.code == 200) {
+						alert("图片上传成功！");
+						$("#imgpre").attr("src", json.path);
+					}else if(json.code == -1) {
+						delCookie("user");
+						location.href = 'login.html';
+					}
+				},
+				error : function(msg) {
+					alert(msg + "图片上传失败！");
+				}
+	        });
+		}
+    });
+    
 }); 
 
 function publicGoods(){
@@ -150,7 +184,7 @@ function publicGoods(){
 	var summary = $("#summary").val();
 	var picUrl = $("#picUrl").val();
 	if(picUrl == null || picUrl == "")
-		picUrl = $("#imgpre").val();
+		picUrl = $("#imgpre").attr("src");
 	var price = $("#price").val();
 	var detail = $("#detail").val();
 	data.name = name;
@@ -180,7 +214,10 @@ function publicGoods(){
 					location.href = 'publicSuccess.html?goodsId=' + goodsId + "&type=1";
 				else
 					location.href = 'publicSuccess.html?goodsId=' + goodsId + "&type=0";
-			} else {
+			}else if(json.code == -1) {
+				delCookie("user");
+				location.href = 'login.html';
+			}else{
 				if(isEdit)
 					alert("编辑失败！");
 				else
@@ -189,4 +226,19 @@ function publicGoods(){
 		}
 	});
 
+}
+
+function picUrlChange(){
+	var picUrl = $("#picUrl").val();
+	$("#imgpre").attr("src", picUrl);
+}
+
+function changeType(type){
+	if(type == 1){
+		$("#urlUpload").attr("style","display:block");
+		$("#fileUpload").attr("style","display:none");
+	}else{
+		$("#urlUpload").attr("style","display:none");
+		$("#fileUpload").attr("style","display:block");
+	}
 }
