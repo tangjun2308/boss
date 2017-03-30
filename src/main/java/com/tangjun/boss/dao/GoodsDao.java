@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -16,30 +14,18 @@ public interface GoodsDao {
     @Insert("INSERT INTO goods (name, summary, price, picUrl, detail, createTime, updateTime, status) " +
     	    "VALUES (#{name}, #{summary}, #{price}, #{picUrl}, #{detail}, NOW(), NOW(), #{status} )")
     @Options(useGeneratedKeys=true, keyProperty="id")
-    public void insertGoods(Goods goods);
+    public int insertGoods(Goods goods);
     
     @Select("select * from goods where id=#{id} and status=1")
     public Goods findById(int id);
     
     @Update("update goods set name=#{name}, summary=#{summary}, price=#{price}, picUrl=#{picUrl}, detail=#{detail}, status=#{status}, updateTime=NOW()"
             + " where id=#{id}")
-    public void updateGoods(Goods goods);
+    public int updateGoods(Goods goods);
     
     @Update("update goods set status=0" + " where id=#{id}")
-    public void deleteGoods(int id);
+    public int deleteGoods(int id);
     
-	@Results({
-		@Result(property="id",column="id"),
-		@Result(property="name",column="userName"),
-		@Result(property="summary",column="summary"),
-		@Result(property="price",column="price"),
-		@Result(property="picUrl",column="picUrl"),		
-		@Result(property="detail",column="detail"),
-		@Result(property="createTime",column="createTime"),
-		@Result(property="updateTime",column="updateTime"),
-		@Result(property="status",column="status")
-		}
-    )
-	@Select("select * from goods where status=1")    
+	@Select("select id, name, price, picUrl from goods where status=1")    
 	public List<Goods> getGoodsList();
 }

@@ -37,6 +37,7 @@ public class SessionFilter extends OncePerRequestFilter{
                 builder.append("</script>");
                 out.print(builder.toString());
                 */
+            	
                 response.setCharacterEncoding("UTF-8");  
                 response.setContentType("application/json");  
                 try {  

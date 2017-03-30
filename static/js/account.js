@@ -25,7 +25,7 @@ $(function(){
 				
 			}else if(json.code == -1) {
 				delCookie("user");
-				location.href = 'login.html';
+				location.href = getIndexHtml();
 			}
 		},
 	   error : function(){ 

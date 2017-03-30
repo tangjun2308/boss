@@ -39,15 +39,14 @@ public class CartController {
 		if(user == null || user.getType()==1){
 			map.put("code", -1);
 			return map;
-		}
+		}		
 		
-		
-		boolean success = false;
+		int success = 0;
 		ShoppingCart cart = cartServiceImpl.findByUserId(userId);
 		if(cart != null){
 			String[] ids= cart.getGoodsIds().split(",");
 			String[] nums= cart.getGoodsNums().split(",");
-			if(ids.toString().contains(goodsId + "")){
+			if(cart.getGoodsIds().contains(goodsId + "")){
 				String newNums = ""; 
 				for(int i=0; i<ids.length; i++){
 					String id = ids[i];
@@ -70,7 +69,7 @@ public class CartController {
 			success = cartServiceImpl.insertCart(cart);
 		}
 
-		if(success){
+		if(success != 0){
 			map.put("code", 200);
 			map.put("cart", cart);
 		}else{
@@ -83,7 +82,7 @@ public class CartController {
 	@RequestMapping(value = "/MyCart.do")
 	@ResponseBody
 	public Map<String, Object> MyCart(HttpServletRequest request, 
-			                               @RequestParam("userId") int userId){
+			                          @RequestParam("userId") int userId){
 		Map<String, Object> map=new HashMap<String, Object>();
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("user");

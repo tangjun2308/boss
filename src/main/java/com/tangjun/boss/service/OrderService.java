@@ -5,7 +5,7 @@ import java.util.List;
 import com.tangjun.boss.meta.Order;
 
 public interface OrderService {
-	public boolean addOrder(Order order);
+	public int addOrder(Order order);
 	public String getSellerGoodsIds();
 	public String getUserGoodsIds(int userId);
 	public int getGoodsSelledNum(int goodsId);

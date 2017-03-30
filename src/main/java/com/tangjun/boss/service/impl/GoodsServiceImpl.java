@@ -14,38 +14,20 @@ public class GoodsServiceImpl implements GoodsService{
 	@Autowired
 	private GoodsDao goodsDao;
 	
-	public boolean insertGoods(Goods goods) {
-		try{
-			goodsDao.insertGoods(goods);
-		}catch (Exception e) {
-			return false;
-		}
-		
-		return true;
+	public int insertGoods(Goods goods) {
+		return	goodsDao.insertGoods(goods);
 	}
 	
 	public Goods findById(int id){
 		return goodsDao.findById(id);
 	}
 
-	public boolean updateGoods(Goods goods) {
-		try{
-			goodsDao.updateGoods(goods);
-		}catch (Exception e) {
-			return false;
-		}
-
-		return true;
+	public int updateGoods(Goods goods) {
+		return goodsDao.updateGoods(goods);
 	}
 
-	public boolean deleteGoods(int id) {
-		try{
-			goodsDao.deleteGoods(id);
-		}catch (Exception e) {
-			return false;
-		}
-
-		return true;
+	public int deleteGoods(int id) {
+		return goodsDao.deleteGoods(id);
 	}
 
 	public List<Goods> getGoodsList() {

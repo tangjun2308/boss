@@ -42,16 +42,15 @@ public class GoodsController {
 			return map;
 		}
 		
-		
-		boolean success = false;
+		int num = 0;
 		goods.setStatus(1);
 		if(goods.getId() != 0){
-			success = goodsServiceImpl.updateGoods(goods);
+			num = goodsServiceImpl.updateGoods(goods);
 		}else{
-			success = goodsServiceImpl.insertGoods(goods);
+			num = goodsServiceImpl.insertGoods(goods);
 		}
 
-		if(success){
+		if(num != 0){
 			map.put("code", 200);
 			map.put("goodsId", goods.getId());
 		}else{
@@ -72,8 +71,8 @@ public class GoodsController {
 			return map;
 		}
 
-		boolean success = goodsServiceImpl.deleteGoods(goodsId);
-		if(success){
+		int num = goodsServiceImpl.deleteGoods(goodsId);
+		if(num != 0){
 			map.put("code", 200);
 		}else{
 			map.put("code", 0);

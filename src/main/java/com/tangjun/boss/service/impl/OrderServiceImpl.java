@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.tangjun.boss.dao.OrderDao;
 import com.tangjun.boss.meta.Order;
-import com.tangjun.boss.meta.ShoppingCart;
 import com.tangjun.boss.service.OrderService;
 
 @Service
@@ -15,13 +14,8 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderDao orderDao;
 	
-	public boolean addOrder(Order order) {
-		try{
-			orderDao.insertOrder(order);
-		}catch (Exception e) {
-			return false;
-		}
-		return true;
+	public int addOrder(Order order) {
+		return orderDao.insertOrder(order);
 	}
 
 	public String getSellerGoodsIds() {

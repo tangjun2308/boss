@@ -14,7 +14,7 @@ public interface OrderDao {
     @Insert("INSERT INTO myorder (userId, goodsId, num, goodsPrice, totalPrice, createTime) " +
     	    "VALUES (#{userId}, #{goodsId}, #{num}, #{goodsPrice}, #{totalPrice}, NOW())")
     @Options(useGeneratedKeys=true, keyProperty="id")
-    public void insertOrder(Order order);
+    public int insertOrder(Order order);
     
 	@Select("select * from myorder where goodsId = #{goodsId} and userId = #{userId}")    
 	public Order getOrderByUserIdAndGoodsId(@Param("goodsId")int goodsId, @Param("userId")int userId);

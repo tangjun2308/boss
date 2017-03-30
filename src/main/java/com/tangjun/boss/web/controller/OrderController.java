@@ -70,7 +70,7 @@ public class OrderController {
 		String[] numss = nums.split(",");
 		String[] goodsIdss = goodsIds.split(",");
 		String[] pricess = prices.split(",");
-		boolean success = true;
+		int success = 0;
 		for(int i=0; i<numss.length; i++){
 			if(!"0".equals(numss[i])){
 				Order order = new Order();
@@ -79,18 +79,19 @@ public class OrderController {
 				order.setNum(Integer.valueOf(numss[i]));
 				order.setGoodsPrice(Double.valueOf(pricess[i]));
 				order.setTotalPrice(Integer.valueOf(numss[i]) * Double.valueOf(pricess[i]));
-				success = success && orderServiceImpl.addOrder(order);
+				success = orderServiceImpl.addOrder(order);
 			}
 		}
 		
-		if(success){
+		if(success != 0){
 			ShoppingCart cart = cartServiceImpl.findByUserId(user.getId());
 			cart.setGoodsIds("");
 			cart.setGoodsNums("");
 			cartServiceImpl.updateCart(cart);
 			map.put("code", 200);
-		}else
+		}else{
 			map.put("code", 0);
+		}
 		
 		return map;
 	}

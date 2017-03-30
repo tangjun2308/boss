@@ -49,16 +49,18 @@ window.onload = function(){
 	var ids = "";
 	var user = getUser();
 	if(user != null && user.type == 0){
+		$("#contentUl").append("<li id=\"noBuy\" onclick=\"changeContent(1)\"><a>未购买的内容</a></li>");
 		status = "<span class=\"had\"><b>已购买</b></span>";
 		$.ajax({
 			url : '/hello/userGoodsIds.do',
 			async: false,
 			success : function(json) {
 				if (json.code == 200) {
-					ids = json.goodsIds;
+					ids = json.goodsIds.split(",");
+					buyIds = ids;
 				}else if(json.code == -1) {
 					delCookie("user");
-					location.href = 'login.html';
+					window.location.reload();
 				}
 			}
 		});
@@ -70,10 +72,10 @@ window.onload = function(){
 			async: false,
 			success : function(json) {
 				if (json.code == 200) {
-					ids = json.goodsIds;
+					ids = json.goodsIds.split(",");
 				}else if(json.code == -1) {
 					delCookie("user");
-					location.href = 'login.html';
+					window.location.reload();
 				}
 			}
 		});
@@ -85,12 +87,13 @@ window.onload = function(){
 		success : function(json) {
 			if (json.code == 200) {
 				var list = json.goodsList;
+				allGoods = json.goodsList;
 				var len = list.length;
 	            for(var i=0; i<len; i++){
 	            	var goods = list[i];
 	            	var status2 = "";
 	            	var delStr = "";
-	            	if(ids.indexOf(goods.id) != -1)
+	            	if($.inArray(goods.id + "",ids) != -1)
 	            		status2 = status;
 	            	else{
 	            		if(user != null && user.type == 1)
@@ -137,6 +140,33 @@ function deleteGoods(goodsId){
 		}
 	}).show();
 
+}
+
+function changeContent(type){
+	if(type == 1){
+		$("#all").attr("class","");
+		$("#noBuy").attr("class","z-sel");
+		$("#plist").html("");
+		
+		var len = allGoods.length;
+        for(var i=0; i<len; i++){
+        	var goods = allGoods[i];
+        	var status2 = "";
+        	var delStr = "";
+        	if($.inArray(goods.id + "",buyIds)== -1){
+	        	
+	        	$("#plist").append(
+		            "<li id=\"g-" + goods.id + "\">"+
+		                 "<a href=\"../html/detail.html?id=" + goods.id + "\" class=\"link\">" +
+		                     "<div class=\"img\"><img src=\"" +goods.picUrl + "\"></div>" +
+		                     "<h3>" + goods.name + "</h3>" +
+		                     "<div class=\"price\"><span class=\"v-unit\">¥</span><span class=\"v-value\">" + goods.price + "</span></div>" +
+		                 "</a>" + 
+		                "</li>"
+	        			);
+        	}
+        }
+	}
 }
 
 function removeElement(_element){

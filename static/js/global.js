@@ -250,3 +250,11 @@ function  logout(){
 		}
 	});
 }
+
+function getIndexHtml(){
+	var loginUrl = "html/login.html";
+	if(window.location.pathname.indexOf("html/") > 0)  //表明已经在html目录下
+		loginUrl = "login.html";
+	
+	return loginUrl;
+}

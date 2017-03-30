@@ -12,14 +12,8 @@ public class CartServiceImpl implements CartService {
 	@Autowired
 	private CartDao cartDao;
 	
-	public boolean insertCart(ShoppingCart shoppingCart) {
-		try{
-			cartDao.insertCart(shoppingCart);
-		}catch (Exception e) {
-			return false;
-		}
-		
-		return true;
+	public int insertCart(ShoppingCart shoppingCart) {
+		return cartDao.insertCart(shoppingCart);
 	}
 	
 	public ShoppingCart findByUserId(int userId){
@@ -27,14 +21,8 @@ public class CartServiceImpl implements CartService {
 		return cart;
 	}
 	
-	public boolean updateCart(ShoppingCart cart){
-		try{
-			cartDao.updateCart(cart);
-		}catch (Exception e) {
-			return false;
-		}
-		
-		return true;
+	public int updateCart(ShoppingCart cart){
+		return cartDao.updateCart(cart);
 	}
 
 }

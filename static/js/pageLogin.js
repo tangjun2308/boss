@@ -12,7 +12,6 @@
 			loginForm.addEventListener('submit',function(e){
 				if(!isSubmiting && this.check()){
 					var value1 = userName.value;
-					//var value2 = password.value;
 					var value2 = md5(password.value);
 					isSubmiting = true;
 					loading.show();
@@ -37,21 +36,6 @@
 							isSubmiting = false;
 						}
 					});
-					/*
-					ajax({
-						data:{name:value1,password:value2},
-						url:'/hello/login',
-						success:function(result){
-							util.setCookie("user",result.user);
-							loading.hide();
-							location.href = '/';
-						},
-						error:function(message){
-							loading.result(message||'登录失败');
-							isSubmiting = false;
-						}
-					});
-					*/
 				}
 			}.bind(this),false);
 			[userName,password].forEach(function(item){
